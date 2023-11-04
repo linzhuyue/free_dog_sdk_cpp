@@ -11,7 +11,6 @@
 #include <unistd.h>
 
 #include <atomic>
-#include <fdsc_utils/enums.hpp>
 #include <fdsc_utils/complex.hpp>
 #include <fdsc_utils/common.hpp>
 namespace FDSC

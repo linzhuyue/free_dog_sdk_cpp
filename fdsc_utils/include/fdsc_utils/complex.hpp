@@ -8,7 +8,6 @@
 #include <cstring>
 #include <bitset>
 #include <algorithm>
-#include <fdsc_utils/enums.hpp>
 #include <fdsc_utils/common.hpp>
 #include <fdsc_utils/color.hpp>
 namespace FDSC{

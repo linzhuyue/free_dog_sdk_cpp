@@ -95,10 +95,10 @@ int main() {
             if (motiontime > 0) {
 
                 if (motiontime >= 500) {
-                    speed = 3 * sin(2 * M_PI * rate_count / 2000.0);
+                    speed = 1 * sin(2 * M_PI * rate_count / 2000.0);
                     // MotorModeLow m, q_,dq_,tau_,kp_, kd_
-                    std::vector<float> FL2_joint{0.0f, speed,0.0f, 0.0f,4.0f};
-                    mCmdArr.setMotorCmd("FL_2", FDSC::MotorModeLow::Servo, FL2_joint);
+                    std::vector<float> FR2_joint{0.0f, speed,0.0f, 0.0f,4.0f};
+                    mCmdArr.setMotorCmd("FR_2", FDSC::MotorModeLow::Servo, FR2_joint);
                     lcmd.motorCmd = mCmdArr;
                     rate_count++;
                 }

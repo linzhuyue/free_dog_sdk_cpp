@@ -41,7 +41,13 @@ include_directories(
 )
 
 set(FDSCSOURCE
- src/common.cpp)
+ src/common.cpp
+ src/unitreeConnectBoost.cpp
+ src/lowState.cpp
+ src/lowCmd.cpp
+ src/highCmd.cpp
+ src/highState.cpp
+ )
 
  add_library(${PROJECT_NAME}
  ${FDSCSOURCE}
@@ -104,6 +110,13 @@ add_executable(${PROJECT_NAME}_tau_node
         
         )
 target_link_libraries(${PROJECT_NAME}_tau_node
+  ${catkin_LIBRARIES}
+)
+add_executable(${PROJECT_NAME}_tau_tracking_node
+        ${FDSCSOURCE}
+        src/examples/exp_joint_torquetracking_control_lowlevel.cpp
+        )
+target_link_libraries(${PROJECT_NAME}_tau_tracking_node
   ${catkin_LIBRARIES}
 )
 ###########
