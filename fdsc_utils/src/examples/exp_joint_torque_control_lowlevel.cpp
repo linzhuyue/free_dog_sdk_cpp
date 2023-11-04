@@ -1,6 +1,4 @@
 #include <fdsc_utils/free_dog_sdk_h.hpp>
-
-
 void show_joint_info(const std::vector<FDSC::MotorState> & mobj)
 {
     for (int i = 0; i < 12; i++)
@@ -68,19 +66,11 @@ int main() {
     conn.send(cmd_bytes);
     std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Some time to collect packets
 
-    std::vector<float> qInit(3, 0.0);
-    std::vector<float> qDes(3, 0.0);
-    std::vector<float> Kp(3, 0.0);
-    std::vector<float> Kd(3, 0.0);
-    std::vector<float> sin_mid_q{0.0, 1.2, -2.0};
-    float dt = 0.002;
-    int sin_count = 0;
     int rate_count = 0;
 
-   
+    float torque = 0.0f;
     int motiontime = 0;
     int max_iter = 240;
-    bool sim = false;
     FDSC::show_in_lowcmd();
     bool show_data = false;
     while (true) {
@@ -100,42 +90,17 @@ int main() {
                 show_info(lstate);
             }
             if (motiontime > 0) {
-                if (motiontime < 10) {
-                    qInit[0] = lstate.motorState[FDSC::jointMapping["FR_0"]].q;
-                    qInit[1] = lstate.motorState[FDSC::jointMapping["FR_1"]].q;
-                    qInit[2] = lstate.motorState[FDSC::jointMapping["FR_2"]].q;
+
+                if (motiontime >= 500) {
+                    torque = (0.0f-lstate.motorState[static_cast<int>(FDSC::Motor::FR_1)].q)*10.0f + (0.0f - lstate.motorState[static_cast<int>(FDSC::Motor::FR_1)].dq)*1.0f;
+                    torque = std::min(std::max(torque,-5.0f),5.0f);
+                    // MotorModeLow m, q_,dq_,tau_,kp_, kd_
+                    std::vector<float> FR1_joint{0.0f, 0.0f,torque, 0.0f, 1.0f};
+                    mCmdArr.setMotorCmd("FR_1", FDSC::MotorModeLow::Servo, FR1_joint);
+                    lcmd.motorCmd = mCmdArr;
                 }
 
-                if (motiontime > 10 && motiontime < 400) {
-                    rate_count++;
-                    double rate = rate_count / 200.0;
-                    Kp = {5, 5, 5};
-                    Kd = {1, 1, 1};
-                    qDes[0] = FDSC::jointLinearInterpolation(qInit[0], sin_mid_q[0], rate);
-                    qDes[1] = FDSC::jointLinearInterpolation(qInit[1], sin_mid_q[1], rate);
-                    qDes[2] = FDSC::jointLinearInterpolation(qInit[2], sin_mid_q[2], rate);
-                    
-                }
-                double freq_Hz = 1.0;
-                double freq_rad = freq_Hz * 2 * M_PI;
-                double t = dt * sin_count;
-
-                if (motiontime >= 400) {
-                    sin_count++;
-                    double sin_joint1 = 0.6 * sin(t * freq_rad);
-                    double sin_joint2 = -0.9 * sin(t * freq_rad);
-                    qDes[0] = sin_mid_q[0];
-                    qDes[1] = sin_mid_q[1] + sin_joint1;
-                    qDes[2] = sin_mid_q[2] + sin_joint2;
-                }
-                std::vector<float> FR0_joint{qDes[0], 0.0f,0.0f, Kp[0],Kd[0]};
-                mCmdArr.setMotorCmd("FR_0", FDSC::MotorModeLow::Servo, FR0_joint);
-                std::vector<float> FR1_joint{qDes[1], 0.0f,0.0f, Kp[1],Kd[1]};
-                mCmdArr.setMotorCmd("FR_1", FDSC::MotorModeLow::Servo, FR1_joint);
-                std::vector<float> FR2_joint{qDes[2], 0.0f,0.0f, Kp[2],Kd[2]};
-                mCmdArr.setMotorCmd("FR_2", FDSC::MotorModeLow::Servo, FR2_joint);
-                lcmd.motorCmd = mCmdArr;
-                // std::cout<<SetForeMAG<<"Motiondata: "<<motiontime<<" qdes2 "<<qDes[2]<<" real_q: "<<lstate.motorState[FDSC::jointMapping["FR_2"]].q<<std::endl;
+                // std::cout<<SetForeMAG<<"Motiondata: "<<motiontime<<" speed "<<speed<<" real_dq: "<<lstate.motorstate[FDSC::jointMapping["FL_2"]].dq<<std::endl;
                 std::vector<uint8_t> cmdBytes = lcmd.buildCmd(false);
                 conn.send(cmdBytes);
             }

@@ -1,6 +1,6 @@
 #ifndef _FDSC_ENUMS_H_
 #define _FDSC_ENUMS_H_
-
+#include <stdint.h>
 namespace FDSC{
     enum class ROBOTModeHigh {  
         IDLE = 0,  
@@ -24,7 +24,7 @@ namespace FDSC{
         TROT = 1,  
         TROT_RUNNING = 2,  
         CLIMB_STAIR = 3,  
-        TROT_OBSTACLE = 4 //我们的go1没有这个  
+        TROT_OBSTACLE = 4 //
     };  
     
     enum class SpeedLevel {  
@@ -32,8 +32,13 @@ namespace FDSC{
         MEDIUM_SPEED = 1,  
         HIGH_SPEED = 2  
     };  
-    
-    enum class Motor {  
+    enum class Leg : int {  
+        FR_ = 0,       // leg index
+        FL_ = 1,
+        RR_ = 2,
+        RL_ = 3
+    };  
+    enum class Motor : int{  
         FR_0 = 0,  
         FR_1 = 1,  
         FR_2 = 2,  
@@ -53,6 +58,59 @@ namespace FDSC{
         Servo = 0x0A,  
         Overheat = 0x08  
     };  
+
+    enum class DogType {
+        UNKNOWN,
+        Laikago,
+        Aliengo,
+        A1,
+        Go1,
+        B1
+    };
+    enum class ModelType {
+        UNKNOWN,
+        AIR,
+        PRO,
+        EDU,
+        PC,
+        XX
+    };
     
+    // 16b
+    typedef union {
+        struct {
+            uint8_t R1          :1;
+            uint8_t L1          :1;
+            uint8_t start       :1;
+            uint8_t select      :1;
+            uint8_t R2          :1;
+            uint8_t L2          :1;
+            uint8_t F1          :1;
+            uint8_t F2          :1;
+            uint8_t A           :1;
+            uint8_t B           :1;
+            uint8_t X           :1;
+            uint8_t Y           :1;
+            uint8_t up          :1;
+            uint8_t right       :1;
+            uint8_t down        :1;
+            uint8_t left        :1;
+        } components;
+        uint16_t value;
+    } xKeySwitchUnion;
+
+    // 40 Byte (now used 24B)
+    typedef struct {
+        uint8_t head[2]; //
+        xKeySwitchUnion btn; //16B
+        float lx; //2B
+        float rx; //2B 
+        float ry; //2B
+        float L2; 
+        float ly; //2B
+
+        uint8_t idle[16]; //16B  16B + 8B = 24B the former 24B
+    } xRockerBtnDataStruct;
+
 }// end FDSC
 #endif

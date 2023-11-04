@@ -46,14 +46,14 @@ namespace FDSC{
 
             BmsCmd(uint8_t o = 0, const std::vector<uint8_t>& r = {0, 0, 0}) : off(o), reserve(r) {}
 
-            std::vector<uint8_t> getBytes() {
+        inline  std::vector<uint8_t> getBytes() {
                 std::vector<uint8_t> data;
                 data.push_back(off);
                 data.insert(data.end(), reserve.begin(), reserve.end());
                 return data;
             }
 
-            BmsCmd fromBytes(const std::vector<uint8_t>& data) {
+        inline  BmsCmd fromBytes(const std::vector<uint8_t>& data) {
                 off = data[0];
                 for (int i = 0; i < 3; i++) {
                     reserve[i] = data[i + 1];
@@ -70,7 +70,7 @@ namespace FDSC{
 
             Led(uint8_t _r, uint8_t _g, uint8_t _b) : r(_r), g(_g), b(_b) {}
 
-            std::vector<uint8_t> getBytes() {
+        inline std::vector<uint8_t> getBytes() {
                 std::vector<uint8_t> data = {r, g, b, 0};
                 return data;
             }
@@ -91,7 +91,7 @@ namespace FDSC{
 
             MotorState(int m, float q_, float dq_, float ddq_, float tau, float qr, float dqr, float ddqr, float temp, const std::vector<uint8_t>& res)
                 : mode(m), q(q_), dq(dq_), ddq(ddq_), tauEst(tau), q_raw(qr), dq_raw(dqr), ddq_raw(ddqr), temperature(temp), reserve(res) {}
-            void set_data(int m, float q_, float dq_, float ddq_, float tau, float qr, float dqr, float ddqr, float temp, const std::vector<uint8_t>& res)
+        inline  void set_data(int m, float q_, float dq_, float ddq_, float tau, float qr, float dqr, float ddqr, float temp, const std::vector<uint8_t>& res)
         {
             mode = m;
             q = q_;
@@ -131,7 +131,7 @@ namespace FDSC{
             MotorCmd(){};
             MotorCmd(MotorModeLow m, float q_, float dq_, float tau_, float kp, float kd, const std::array<float, 3>& res)
                 : mode(m), q(q_), dq(dq_), tau(tau_), Kp(kp), Kd(kd), reserve(res) {}
-            void set_data(const MotorModeLow m,const float q_,const float dq_,const float tau_,const float kp_,const float kd_)
+        inline   void set_data(const MotorModeLow m,const float q_,const float dq_,const float tau_,const float kp_,const float kd_)
             {
                 mode = m;
                 q = q_;
@@ -141,7 +141,7 @@ namespace FDSC{
                 Kd = kd_;
                 reserve = {0.0f,0.0f,0.0f}; //8Bytes
             };
-            std::vector<uint8_t> getBytes() {
+        inline  std::vector<uint8_t> getBytes() {
                 if (static_cast<int>(mode) < 256) {
                     mode = static_cast<MotorModeLow>(static_cast<int>(mode));
                 }
@@ -167,7 +167,7 @@ namespace FDSC{
                 return data;
             }
 
-            void fromBytes(const std::vector<uint8_t>& data,bool show_data) {
+         inline   void fromBytes(const std::vector<uint8_t>& data,bool show_data) {
                 mode = static_cast<MotorModeLow>(data[0]);
                 q = hex_to_float_i(data,1,5);
                 dq = hex_to_float_i(data,5,9);
@@ -205,7 +205,7 @@ namespace FDSC{
                 }
             }
             // MotorModeLow m, q_,dq_,tau_,kp_, kd_
-            void setMotorCmd(const std::string& motorIndex,const MotorModeLow m_,const std::vector<float> &jointdata) {
+        inline  void setMotorCmd(const std::string& motorIndex,const MotorModeLow m_,const std::vector<float> &jointdata) {
                 
                 int index;
                 if (motorIndex == "FR_0" || motorIndex == "0") index = 0;
@@ -237,7 +237,7 @@ namespace FDSC{
                 }
             }
 
-            std::vector<uint8_t> getBytes() {
+        inline  std::vector<uint8_t> getBytes() {
                 std::vector<uint8_t> data;
                 for (int i = 0; i < 20; ++i) {
                     std::vector<u_int8_t> temp = motors[i].getBytes();
@@ -246,12 +246,12 @@ namespace FDSC{
 
                 return data;
             }
-            std::vector<uint8_t> getChunk(const std::vector<uint8_t>& data, int i) {
+        inline  std::vector<uint8_t> getChunk(const std::vector<uint8_t>& data, int i) {
                 std::vector<uint8_t> chunk(data.begin() + (i - 1) * 27, data.begin() + i * 27);
                 return chunk;
             }
 
-            void fromBytes(const std::vector<uint8_t>& data) {
+        inline  void fromBytes(const std::vector<uint8_t>& data) {
                 for (int i = 0; i < 20; i++)
                 {
                     motors[i].fromBytes(getChunk(data,i),false);

@@ -70,7 +70,7 @@ namespace FDSC
             stopRecv();
         }
 
-        void startRecv()
+    inline  void startRecv()
         {
             runRecv_.store(true);
             recvThread_ = std::thread(&UnitreeConnection::recvThread, this);
@@ -95,14 +95,14 @@ namespace FDSC
                 socket_->send_to(boost::asio::buffer(cmd), *receiver_endpoint_);
             }
         }
-        std::vector<std::vector<uint8_t>> getData()
+    inline std::vector<std::vector<uint8_t>> getData()
         {
             std::lock_guard<std::mutex> lock(data_mutex);
             std::vector<std::vector<uint8_t>> ret = data_all;
             data_all.clear();
             return ret;
         }
-        void getData(std::vector<std::vector<uint8_t>>& ret)
+    inline  void getData(std::vector<std::vector<uint8_t>>& ret)
         {
             try
             {
@@ -168,8 +168,6 @@ namespace FDSC
                     std::cerr <<"Error in receive_from: "<< e.what() << '\n';
                 }
                 
-                // TODO will be check later, it maybe debug here.
-                // std::this_thread::sleep_for(std::chrono::milliseconds(50)); //1000hz
             }
         }
     };

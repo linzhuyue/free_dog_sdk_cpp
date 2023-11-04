@@ -23,7 +23,6 @@ namespace FDSC
                 std::vector<float> imu_accelerometer = std::vector<float>(3,0.0f);
                 std::vector<float> imu_rpy = std::vector<float>(3,0.0f);
                 uint8_t temperature_imu = 0;
-                Imu imu_ = Imu(imu_quaternion,imu_gyroscope,imu_accelerometer,imu_rpy,temperature_imu); // 22-75
                 //motor state: 20 * 32 in lowstate
                 int motormode = 0;
                 float q = 0;
@@ -50,6 +49,7 @@ namespace FDSC
                 std::vector<uint16_t> footForce = {0, 0, 0, 0}; //739-747. 2Bytes for every
                 std::vector<uint16_t> footForceEst = {0, 0, 0, 0}; //747-755
                 std::vector<uint8_t> robotlowmode = std::vector<uint8_t>(4,0);  // TODO what ? 755-759
+                xRockerBtnDataStruct wirelessdata;
                 std::vector<uint8_t> wirelessRemote = std::vector<uint8_t>(40,0);//759-799
                 std::vector<uint8_t> reserve = std::vector<uint8_t>(4,0);//799-803
                 std::vector<uint8_t> crc = std::vector<uint8_t>(5,0);//803-808
@@ -70,7 +70,33 @@ namespace FDSC
                             cell_vol[i] = hex_to_u16_i(data, 13 + i * 2, 15 + i * 2);
                         }
                     }
+                void dataToWirelessRemoteState(const std::vector<uint8_t>& data) {
 
+                        // memcpy(&wirelessdata, &wirelessRemote[0], 40);
+                        wirelessdata.head[0] = data[0];
+                        wirelessdata.head[1] = data[1];
+                        wirelessdata.btn.components.R1    = data[2] ;
+                        wirelessdata.btn.components.L1    = data[3] ;
+                        wirelessdata.btn.components.start = data[4] ;
+                        wirelessdata.btn.components.select= data[5] ;
+                        wirelessdata.btn.components.R2    = data[6] ;
+                        wirelessdata.btn.components.L2    = data[7] ;
+                        wirelessdata.btn.components.F1    = data[8] ;
+                        wirelessdata.btn.components.F2    = data[9] ;
+                        wirelessdata.btn.components.A     = data[10] ;
+                        wirelessdata.btn.components.B     = data[11] ;
+                        wirelessdata.btn.components.X     = data[12] ;
+                        wirelessdata.btn.components.Y     = data[13] ;
+                        wirelessdata.btn.components.up    = data[14] ;
+                        wirelessdata.btn.components.right = data[15] ;
+                        wirelessdata.btn.components.down  = data[16] ;
+                        wirelessdata.btn.components.left  = data[17] ;
+
+                        wirelessdata.lx = hex_to_float_2B(data,18,19);
+                        wirelessdata.rx = hex_to_float_2B(data,20,21);
+                        wirelessdata.ry = hex_to_float_2B(data,22,23);
+                        wirelessdata.ly = hex_to_float_2B(data,24,25); //TODO may be not right Only use 24 B
+                    }
                 void dataToImu(const std::vector<uint8_t>& data) {
                         for (int i = 0; i < 4; i++) {
                             imu_quaternion[i] = hex_to_float_i(data, i * 4, (i + 1) * 4);
@@ -97,7 +123,7 @@ namespace FDSC
                     }
 
 
-                void parseData(const std::vector<uint8_t>& data) {
+           inline   void parseData(const std::vector<uint8_t>& data) {
                     try
                     {
                          // data length is 820
@@ -125,6 +151,8 @@ namespace FDSC
                         }
                         std::copy(data.begin()+755,data.begin()+759, robotlowmode.begin()); //
                         std::copy(data.begin()+759,data.begin()+799, wirelessRemote.begin()); //
+
+                        dataToWirelessRemoteState(wirelessRemote);
                         std::copy(data.begin()+799,data.begin()+803, reserve.begin()); //
                         std::copy(data.begin()+803,data.begin()+808, crc.begin()); //
                         std::copy(data.begin()+808,data.end(), zeros_res.begin()); //808-820

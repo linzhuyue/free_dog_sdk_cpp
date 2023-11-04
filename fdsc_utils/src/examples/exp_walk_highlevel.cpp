@@ -21,15 +21,16 @@ int main() {
     // std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Some time to collect packets
 
     int motiontime = 0;
-    int max_iter = 240;
+    int max_iter = 2400;
     bool show_info = false;
     while (true) {
         std::vector<std::vector<uint8_t>> dataall = conn.getData();
         if (dataall.size()!=0)
         {
-            std::cout<<"reveive pkg len: "<<dataall.size()<<" Motiontime: "<<motiontime<<std::endl;
+            
             if(motiontime % 100 == 0 && show_info)
             {
+                std::cout<<"reveive pkg len: "<<dataall.size()<<" Motiontime: "<<motiontime<<std::endl;
                 std::cout<<"reveive pkg len: "<<dataall.size()<<" Motiontime: "<<motiontime<<std::endl;
                 std::vector<uint8_t> data = dataall.at(dataall.size()-1);
                 std::cout<<"loop: "<<motiontime<<" datalen: " <<std::dec<<data.size()<<std::endl;
@@ -88,90 +89,89 @@ int main() {
                 }
                 std::cout << "=============================" << std::endl;
             }
-            if (motiontime > 0 && motiontime < 10) {
+
+            if (motiontime > 0 && motiontime < 100) {
+                hcmd.robotmode_ = FDSC::ROBOTModeHigh::STAND_UP;
+            }
+
+            if (motiontime > 100 && motiontime < 200) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
-                hcmd.euler.at(0) = -0.3;
+                hcmd.euler.at(0) = 0.25;
                 hcmd.euler.at(1) = 0;
                 hcmd.euler.at(2) = 0;
             }
 
-            if (motiontime > 10 && motiontime < 20) {
-                hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
-                hcmd.euler.at(0) = 0.3;
-                hcmd.euler.at(1) = 0;
-                hcmd.euler.at(2) = 0;
-            }
-
-            if (motiontime > 20 && motiontime < 30) {
+            if (motiontime > 200 && motiontime < 300) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
                 hcmd.euler.at(0) =  0.0;
-                hcmd.euler.at(1) = -0.2;
+                hcmd.euler.at(1) = -0.35;
                 hcmd.euler.at(2) = 0;
             }
 
-            if (motiontime > 30 && motiontime < 40) {
+            if (motiontime > 300 && motiontime < 400) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
                 hcmd.euler.at(0) = 0.;
-                hcmd.euler.at(1) = 0.2;
+                hcmd.euler.at(1) = 0.35;
                 hcmd.euler.at(2) = 0;
             }
 
-            if (motiontime > 40 && motiontime < 50) {
+            if (motiontime > 400 && motiontime < 500) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
                 hcmd.euler.at(0) = 0.0;
                 hcmd.euler.at(1) = 0;
                 hcmd.euler.at(2) = -0.2;
             }
 
-            if (motiontime > 50 && motiontime < 60) {
+            if (motiontime > 500 && motiontime < 600) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
                 hcmd.euler.at(0) = 0.0;
                 hcmd.euler.at(1) = 0;
                 hcmd.euler.at(2) = 0.2;
             }
 
-            if (motiontime > 60 && motiontime < 70) {
+            if (motiontime > 600 && motiontime < 700) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
-                hcmd.bodyHeight = -0.2; // TODO should set to negtive 
+                hcmd.bodyHeight = -0.15; // TODO should set to negtive 
             }
 
-            if (motiontime > 70 && motiontime < 80) {
+            if (motiontime > 700 && motiontime < 800) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
                 hcmd.bodyHeight = -0.1;
             }
 
-            if (motiontime > 80 && motiontime < 90) {
+            if (motiontime > 800 && motiontime < 900) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
-                hcmd.bodyHeight = -0.15;
+                hcmd.bodyHeight = -0.05;
             }
 
-            if (motiontime > 90 && motiontime < 110) {
+            if (motiontime > 900 && motiontime < 1100) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::STAND_DOWN;
             }
 
-            if (motiontime > 110 && motiontime < 130) {
+            if (motiontime > 1100 && motiontime < 1300) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::STAND_UP;
             }
 
-            if (motiontime > 130 && motiontime < 140) {
-                hcmd.robotmode_ = FDSC::ROBOTModeHigh::IDLE;
+            if (motiontime > 1300 && motiontime < 1400) {
+                hcmd.robotmode_ = FDSC::ROBOTModeHigh::FORCE_STAND;
             }
-            if (motiontime > 140 && motiontime < 180) {
+            if (motiontime > 1400 && motiontime < 1800) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::VEL_WALK;
                 hcmd.gaitType = FDSC::GaitType::TROT;
-                hcmd.velocity.at(0) = 0.2;
+                hcmd.velocity.at(0) = 0.03;
                 hcmd.velocity.at(1) = 0.0;
                 hcmd.yawSpeed = 1.0;
+                hcmd.bodyHeight = 0.1;
                 hcmd.footRaiseHeight = 0.13;
             }
 
-            if (motiontime > 180 && motiontime < 200) {
+            if (motiontime > 1800 && motiontime < 2000) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::IDLE;
                 hcmd.velocity.at(0) = 0.0;
                 hcmd.velocity.at(1) = 0.0;
             }
 
-            if (motiontime > 200 && motiontime < 240) {
+            if (motiontime > 2000 && motiontime < 2400) {
                 hcmd.robotmode_ = FDSC::ROBOTModeHigh::VEL_WALK;
                 hcmd.gaitType = FDSC::GaitType::TROT;
                 hcmd.velocity.at(0) = 0.0;

@@ -30,11 +30,10 @@ namespace FDSC{
             Led led = Led(0, 0, 0);
             std::vector<uint8_t> wirelessRemote = std::vector<uint8_t>(40, 0); //wifi
             std::vector<uint8_t> reserve = std::vector<uint8_t>(4, 0);
-            // uint32_t crc = 0;
             std::vector<uint8_t> crc;
             bool encrypt = false;
 
-            std::vector<uint8_t> buildCmd(bool debug = false) {
+        inline  std::vector<uint8_t> buildCmd(bool debug = false) {
                 std::vector<uint8_t> cmd(129);
                 std::copy(head.begin(), head.end(), cmd.begin());
                 cmd[2] = levelFlag;

@@ -25,7 +25,7 @@ namespace FDSC{
             std::vector<uint8_t> crc;
             bool encrypt = true;
 
-            std::vector<uint8_t> buildCmd(bool debug = false) {
+        inline  std::vector<uint8_t> buildCmd(bool debug = false) {
                 std::vector<uint8_t> cmd(614);
                 std::copy(head.begin(), head.end(), cmd.begin());
                 cmd[2] = levelFlag;

@@ -22,7 +22,7 @@ catkin_package(
   INCLUDE_DIRS
     include
   LIBRARIES
-    # ${PROJECT_NAME}
+    ${PROJECT_NAME}
   CATKIN_DEPENDS
     ${CATKIN_PACKAGE_DEPENDENCIES}
   DEPENDS
@@ -40,29 +40,40 @@ include_directories(
   ${EIGEN3_INCLUDE_DIRS}
 )
 
-# interface library
-# add_library(${PROJECT_NAME}_node
-#   src/exp_pushups_highlevel.cpp
-# )
-## Declare cpp executables
+set(FDSCSOURCE
+ src/common.cpp)
+
+ add_library(${PROJECT_NAME}
+ ${FDSCSOURCE}
+)
+target_link_libraries(${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
+target_compile_options(${PROJECT_NAME} PUBLIC -W -Wall -Wextra -pedantic -pedantic-errors)
+
 ##############
 ## Highlevel ##
 ##############
 add_executable(${PROJECT_NAME}_pushup_node
-        src/exp_pushups_highlevel.cpp
-        # src/test/test_common.cpp
+        ${FDSCSOURCE}
+        src/examples/exp_pushups_highlevel.cpp
+        
         )
 target_link_libraries(${PROJECT_NAME}_pushup_node
   ${catkin_LIBRARIES}
 )
 add_executable(${PROJECT_NAME}_rotate90_node
-        src/exp_rotate_90_highlevel.cpp
+      ${FDSCSOURCE}
+      src/examples/exp_rotate_90_highlevel.cpp
+      
         )
 target_link_libraries(${PROJECT_NAME}_rotate90_node
   ${catkin_LIBRARIES}
 )
 add_executable(${PROJECT_NAME}_walk_node
-        src/exp_walk_highlevel.cpp
+      ${FDSCSOURCE}
+      src/examples/exp_walk_highlevel.cpp
+      
         )
 target_link_libraries(${PROJECT_NAME}_walk_node
   ${catkin_LIBRARIES}
@@ -71,19 +82,26 @@ target_link_libraries(${PROJECT_NAME}_walk_node
 ## Lowlevel ##
 ##############
 add_executable(${PROJECT_NAME}_pd_node
-        src/exp_joint_position_control_lowlevel.cpp
+        ${FDSCSOURCE}
+        src/examples/exp_joint_position_control_lowlevel.cpp
+        
         )
 target_link_libraries(${PROJECT_NAME}_pd_node
   ${catkin_LIBRARIES}
 )
 add_executable(${PROJECT_NAME}_vel_node
-        src/exp_joint_velocity_control_lowlevel.cpp
+        ${FDSCSOURCE}
+        src/examples/exp_joint_velocity_control_lowlevel.cpp
+        
         )
 target_link_libraries(${PROJECT_NAME}_vel_node
   ${catkin_LIBRARIES}
+  
 )
 add_executable(${PROJECT_NAME}_tau_node
-        src/exp_joint_torque_control_lowlevel.cpp
+        ${FDSCSOURCE}
+        src/examples/exp_joint_torque_control_lowlevel.cpp
+        
         )
 target_link_libraries(${PROJECT_NAME}_tau_node
   ${catkin_LIBRARIES}
@@ -92,6 +110,7 @@ target_link_libraries(${PROJECT_NAME}_tau_node
 ## Test ##
 ###########
 add_executable(${PROJECT_NAME}_test_node
+        ${FDSCSOURCE}
         # src/test/test_boost_udp.cpp
         src/test/test_common.cpp
         )

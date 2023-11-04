@@ -24,7 +24,6 @@ namespace FDSC{
             std::vector<float> imu_accelerometer = std::vector<float>(3,0.0f);
             std::vector<float> imu_rpy = std::vector<float>(3,0.0f);
             uint8_t temperature_imu = 0;
-            Imu imu_ = Imu(imu_quaternion,imu_gyroscope,imu_accelerometer,imu_rpy,temperature_imu); // 22-75
             //motor state: 20 * 38
             int motormode = 0;
             float q = 0;
