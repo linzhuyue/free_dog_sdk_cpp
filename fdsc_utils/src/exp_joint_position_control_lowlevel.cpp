@@ -1,16 +1,6 @@
-#include <iostream>
-#include <vector>
-#include <array>
-#include <cstring>
-#include <thread>
-#include <fdsc_utils/lowCmd.hpp>
-#include <fdsc_utils/lowState.hpp>
-// #include <fdsc_utils/unitreeConnect.hpp>
-// #include <fdsc_utils/unitreeConnectBoostAsyc.hpp>
-#include <fdsc_utils/unitreeConnectBoost.hpp> //more fast and safe than the above one
-#include <fdsc_utils/complex.hpp>
-#include <fdsc_utils/color.hpp>
-#include <algorithm>
+#include <fdsc_utils/free_dog_sdk_h.hpp>
+
+
 void show_joint_info(const std::vector<FDSC::MotorState> & mobj)
 {
     for (int i = 0; i < 12; i++)
@@ -38,7 +28,7 @@ void show_info(const FDSC::lowState & lstate)
         // FDSC::show_byte_data(data,8);
         // std::cout<<std::endl;
         std::cout<<SetForeGRN << "------------------Joint info: -------------------" << std::endl;
-        show_joint_info(lstate.motorstate);
+        show_joint_info(lstate.motorState);
         // BMS do not have any data from UDP data
         std::cout<<SetForeRED << "------------------BMS info(No data): -------------------" << std::endl;
         std::cout << "SOC: " << int(lstate.SOC) << std::endl;
@@ -111,9 +101,9 @@ int main() {
             }
             if (motiontime > 0) {
                 if (motiontime < 10) {
-                    qInit[0] = lstate.motorstate[FDSC::jointMapping["FR_0"]].q;
-                    qInit[1] = lstate.motorstate[FDSC::jointMapping["FR_1"]].q;
-                    qInit[2] = lstate.motorstate[FDSC::jointMapping["FR_2"]].q;
+                    qInit[0] = lstate.motorState[FDSC::jointMapping["FR_0"]].q;
+                    qInit[1] = lstate.motorState[FDSC::jointMapping["FR_1"]].q;
+                    qInit[2] = lstate.motorState[FDSC::jointMapping["FR_2"]].q;
                 }
 
                 if (motiontime > 10 && motiontime < 400) {
@@ -145,7 +135,7 @@ int main() {
                 std::vector<float> FR2_joint{qDes[2], 0.0f,0.0f, Kp[2],Kd[2]};
                 mCmdArr.setMotorCmd("FR_2", FDSC::MotorModeLow::Servo, FR2_joint);
                 lcmd.motorCmd = mCmdArr;
-                // std::cout<<SetForeMAG<<"Motiondata: "<<motiontime<<" qdes2 "<<qDes[2]<<" real_q: "<<lstate.motorstate[FDSC::jointMapping["FR_2"]].q<<std::endl;
+                // std::cout<<SetForeMAG<<"Motiondata: "<<motiontime<<" qdes2 "<<qDes[2]<<" real_q: "<<lstate.motorState[FDSC::jointMapping["FR_2"]].q<<std::endl;
                 std::vector<uint8_t> cmdBytes = lcmd.buildCmd(false);
                 conn.send(cmdBytes);
             }

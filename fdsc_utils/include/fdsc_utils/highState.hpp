@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _FDSC_HIGHSTATE_H_
+#define _FDSC_HIGHSTATE_H_
 #include <iostream>
 #include <vector>
 #include <array>
@@ -35,7 +36,7 @@ namespace FDSC{
             float ddq_raw = 0;            
             uint8_t motor_temperature = 0;
             std::vector<uint8_t> res_bms{0,0,0,0,0,0,0,0};
-            std::vector<MotorState> motorstate =std::vector<MotorState>(20, MotorState(motormode, q, dq, ddq, tauEst, q_raw, dq_raw, ddq_raw, motor_temperature, res_bms)); //
+            std::vector<MotorState> motorState =std::vector<MotorState>(20, MotorState(motormode, q, dq, ddq, tauEst, q_raw, dq_raw, ddq_raw, motor_temperature, res_bms)); //
             uint8_t version_h = 0;
             uint8_t version_l = 0;
             uint8_t bms_status = 0;
@@ -109,7 +110,7 @@ namespace FDSC{
                 ddq_raw = hex_to_float_i(data,   25,   29);
                 motor_temperature = data[29];
                 std::copy(data.begin()+30,data.end(),res_bms.begin());
-                motorstate[index].set_data(motormode, q, dq, ddq, tauEst, q_raw, dq_raw, ddq_raw, motor_temperature, res_bms);
+                motorState[index].set_data(motormode, q, dq, ddq, tauEst, q_raw, dq_raw, ddq_raw, motor_temperature, res_bms);
             }
 
         inline  void parseData(const std::vector<uint8_t>& data) {
@@ -171,3 +172,4 @@ namespace FDSC{
 
         };
 } //END FDSC
+#endif

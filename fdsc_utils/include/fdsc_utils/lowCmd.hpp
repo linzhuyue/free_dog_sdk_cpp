@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _FDSC_LOWCMD_H_
+#define _FDSC_LOWCMD_H_
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -66,3 +67,4 @@ namespace FDSC{
         };
 
 }
+#endif

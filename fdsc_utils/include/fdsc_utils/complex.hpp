@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _FDSC_COMPLEX_H_
+#define _FDSC_COMPLEX_H_
 #include <iostream>
 #include <vector>
 #include <array>
@@ -258,3 +259,4 @@ namespace FDSC{
             }
     };
 }
+#endif

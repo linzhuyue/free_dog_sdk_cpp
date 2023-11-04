@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _FDSC_HIGHCMD_H_
+#define _FDSC_HIGHCMD_H_
+
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -96,3 +98,4 @@ namespace FDSC{
             }
     };
 }// end FDSC
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _FDSC_LOWSTATE_H_
+#define _FDSC_LOWSTATE_H_
 #include <iostream>
 #include <vector>
 #include <array>
@@ -34,7 +35,7 @@ namespace FDSC
                 float ddq_raw = 0;            
                 uint8_t motor_temperature = 0;
                 std::vector<uint8_t> res_bms{0,0,0,0,0,0,0,0};
-                std::vector<MotorState> motorstate =std::vector<MotorState>(20, MotorState(motormode, q, dq, ddq, tauEst, q_raw, dq_raw, ddq_raw, motor_temperature, res_bms)); 
+                std::vector<MotorState> motorState =std::vector<MotorState>(20, MotorState(motormode, q, dq, ddq, tauEst, q_raw, dq_raw, ddq_raw, motor_temperature, res_bms)); 
                 uint8_t version_h = 0;
                 uint8_t version_l = 0;
                 uint8_t bms_status = 0;
@@ -92,7 +93,7 @@ namespace FDSC
                         ddq_raw = static_cast<float>(hex_to_u16_i(data,   21,   23));
                         motor_temperature = data[24];
                         std::copy(data.begin()+24,data.end(),res_bms.begin());
-                        motorstate[index].set_data(motormode, q, dq, ddq, tauEst, q_raw, dq_raw, ddq_raw, motor_temperature, res_bms);
+                        motorState[index].set_data(motormode, q, dq, ddq, tauEst, q_raw, dq_raw, ddq_raw, motor_temperature, res_bms);
                     }
 
 
@@ -150,3 +151,4 @@ namespace FDSC
     };
 
 } // namespace FDSC
+#endif

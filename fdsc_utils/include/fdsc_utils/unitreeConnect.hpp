@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _FDSC_UNICONNECT_H_
+#define _FDSC_UNICONNECT_H_
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -150,3 +151,4 @@ namespace FDSC
         }
     };
 } // namespace FDSC
+#endif

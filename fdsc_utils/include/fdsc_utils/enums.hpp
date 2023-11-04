@@ -1,5 +1,6 @@
-#pragma once
-#include <iostream>  
+#ifndef _FDSC_ENUMS_H_
+#define _FDSC_ENUMS_H_
+
 namespace FDSC{
     enum class ROBOTModeHigh {  
         IDLE = 0,  
@@ -54,3 +55,4 @@ namespace FDSC{
     };  
     
 }// end FDSC
+#endif

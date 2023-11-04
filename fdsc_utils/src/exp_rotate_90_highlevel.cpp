@@ -1,14 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <array>
-#include <cstring>
-#include <thread>
-#include <fdsc_utils/highCmd.hpp>
-#include <fdsc_utils/highState.hpp>
-// #include <fdsc_utils/unitreeConnect.hpp>
-#include <fdsc_utils/unitreeConnectBoost.hpp>
-#include <fdsc_utils/complex.hpp>
-#include <fdsc_utils/color.hpp>
+#include <fdsc_utils/free_dog_sdk_h.hpp>
 void show_joint_info(const std::vector<FDSC::MotorState> & mobj)
 {
     for (int i = 0; i < 12; i++)
@@ -56,7 +46,7 @@ int main() {
                 // FDSC::show_byte_data(data,8);
                 // std::cout<<std::endl;
                 std::cout<<SetForeGRN << "------------------Joint info: -------------------" << std::endl;
-                show_joint_info(hstate.motorstate);
+                show_joint_info(hstate.motorState);
                 // BMS do not have any data from UDP data
                 std::cout<<SetForeRED << "------------------BMS info(No data): -------------------" << std::endl;
                 std::cout << "SOC: " << int(hstate.SOC) << std::endl;

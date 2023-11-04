@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _FDSC_UNICONNECT_BOOST_H_
+#define _FDSC_UNICONNECT_BOOST_H_
 
 #include <iostream>
 #include <thread>
@@ -173,3 +174,4 @@ namespace FDSC
         }
     };
 } // namespace FDSC
+#endif

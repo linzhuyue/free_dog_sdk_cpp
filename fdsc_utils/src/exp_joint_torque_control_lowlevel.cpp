@@ -1,16 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <array>
-#include <cstring>
-#include <thread>
-#include <fdsc_utils/lowCmd.hpp>
-#include <fdsc_utils/lowState.hpp>
-// #include <fdsc_utils/unitreeConnect.hpp>
-// #include <fdsc_utils/unitreeConnectBoostAsyc.hpp>
-#include <fdsc_utils/unitreeConnectBoost.hpp> //more fast and safe than the above one
-#include <fdsc_utils/complex.hpp>
-#include <fdsc_utils/color.hpp>
-#include <algorithm>
+#include <fdsc_utils/free_dog_sdk_h.hpp>
 void show_joint_info(const std::vector<FDSC::MotorState> & mobj)
 {
     for (int i = 0; i < 12; i++)
@@ -38,7 +26,7 @@ void show_info(const FDSC::lowState & lstate)
         // FDSC::show_byte_data(data,8);
         // std::cout<<std::endl;
         std::cout<<SetForeGRN << "------------------Joint info: -------------------" << std::endl;
-        show_joint_info(lstate.motorstate);
+        show_joint_info(lstate.motorState);
         // BMS do not have any data from UDP data
         std::cout<<SetForeRED << "------------------BMS info(No data): -------------------" << std::endl;
         std::cout << "SOC: " << int(lstate.SOC) << std::endl;
@@ -104,7 +92,7 @@ int main() {
             if (motiontime > 0) {
 
                 if (motiontime >= 500) {
-                    torque = (0.0f-lstate.motorstate[FDSC::jointMapping["FR_1"]].q)*10.0f + (0.0f - lstate.motorstate[FDSC::jointMapping["FR_1"]].dq)*1.0f;
+                    torque = (0.0f-lstate.motorState[FDSC::jointMapping["FR_1"]].q)*10.0f + (0.0f - lstate.motorState[FDSC::jointMapping["FR_1"]].dq)*1.0f;
                     torque = std::min(std::max(torque,-5.0f),5.0f);
                     // MotorModeLow m, q_,dq_,tau_,kp_, kd_
                     std::vector<float> FR1_joint{0.0f, 0.0f,torque, 0.0f, 1.0f};

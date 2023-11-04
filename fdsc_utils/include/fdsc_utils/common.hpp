@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _FDSC_COMMON_H_
+#define _FDSC_COMMON_H_
 #include <cstring>
 #include <iostream>
 #include <array>
@@ -12,6 +13,35 @@
 #include <cassert>
 #include <fdsc_utils/color.hpp>
 namespace FDSC{
+
+    constexpr double go1_Hip_max   = 1.047;    // unit:radian ( = 60   degree)
+    constexpr double go1_Hip_min   = -1.047;   // unit:radian ( = -60  degree)
+    constexpr double go1_Thigh_max = 2.966;    // unit:radian ( = 170  degree)
+    constexpr double go1_Thigh_min = -0.663;   // unit:radian ( = -38  degree)
+    constexpr double go1_Calf_max  = -0.837;   // unit:radian ( = -48  degree)
+    constexpr double go1_Calf_min  = -2.721;   // unit:radian ( = -156 degree)
+    // definition of each leg and joint
+    constexpr int FR_ = 0;       // leg index
+    constexpr int FL_ = 1;
+    constexpr int RR_ = 2;
+    constexpr int RL_ = 3;
+
+    constexpr int FR_0 = 0;      // joint index
+    constexpr int FR_1 = 1;      
+    constexpr int FR_2 = 2;
+
+    constexpr int FL_0 = 3;
+    constexpr int FL_1 = 4;
+    constexpr int FL_2 = 5;
+
+    constexpr int RR_0 = 6;
+    constexpr int RR_1 = 7;
+    constexpr int RR_2 = 8;
+
+    constexpr int RL_0 = 9;
+    constexpr int RL_1 = 10;
+    constexpr int RL_2 = 11;
+
     enum class DogType {
         UNKNOWN,
         Laikago,
@@ -36,8 +66,9 @@ namespace FDSC{
         {"RL_0", 9}, {"RL_1", 10}, {"RL_2", 11}
     };
 
+
     std::string lib_version() {
-        return "0.2";
+        return "1.0.1";
     }
 
     std::string decode_sn(const std::vector<uint8_t>& data) {
@@ -314,4 +345,4 @@ namespace FDSC{
     }
 } 
 // end FDSC NAMESPACE
-
+#endif
