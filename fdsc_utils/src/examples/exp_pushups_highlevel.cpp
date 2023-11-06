@@ -9,7 +9,7 @@ void show_joint_info(const std::vector<FDSC::MotorState> & mobj)
 
 }
 int main() {
-    std::string settings = "HIGH_WIFI_DEFAULTS";//"SIM_DEFAULTS";//HIGH_WIFI_DEFAULTS
+    std::string settings = "HIGH_WIRED_DEFAULTS";//"SIM_DEFAULTS";//HIGH_WIFI_DEFAULTS
     FDSC::UnitreeConnection conn(settings);
     conn.startRecv();
     FDSC::highCmd hcmd;
@@ -93,8 +93,11 @@ int main() {
             }else {
                 if (i % 2 == 0) {
                     hcmd.robotmode_= FDSC::ROBOTModeHigh::STAND_DOWN;
+                    std::cout<<FOREBLU<<"In stand down mode "<<RESETTEXT<<std::endl;
                 } else {
                     hcmd.robotmode_= FDSC::ROBOTModeHigh::STAND_UP;
+                    std::cout<<SetForeGRN<<"In stand up mode "<<RESETTEXT<<std::endl;
+
                 }
                 cmd_bytes = hcmd.buildCmd(false);
                 conn.send(cmd_bytes);
