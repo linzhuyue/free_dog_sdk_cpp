@@ -40,7 +40,8 @@ L1 + L2 + START
 ```
 
 ## The IP config and meanings in the file "unitreeConnectBoost.hpp":
-```    const std::string localIpWifi = "192.168.12.222"; // Your PC wifi will give by the DHCP wifi:pwd 00000000
+```
+    const std::string localIpWifi = "192.168.12.222"; // Your PC wifi will give by the DHCP wifi:pwd 00000000
     const std::string localIpEth = "192.168.123.12"; // Your PC
     const std::string addrWifi = "192.168.12.1"; // wifi pi
     const std::string addrLow = "192.168.123.10"; // Nano can't connect
